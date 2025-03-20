@@ -18,7 +18,6 @@ This repository implements a **Spatiotemporal Transformer** for **gesture/action
 
 ## Project Structure
 
-A recommended layout is:
 
 ```
 SPATIAL_TEMPORAL_TRANSFORMER_NETWORK_MEDIAPIPE/
@@ -167,11 +166,11 @@ bash scripts/run_pipeline.sh \
 
 ## License & Credits
 
-- **License**: MIT (or whichever license you prefer).
+- **License**: MIT 
 - **Credits**:
   - [MediaPipe](https://github.com/google/mediapipe) for keypoint detection.
   - [PyTorch](https://pytorch.org/) for deep learning.
-  - The scuba GIF courtesy of [Girls that Scuba](https://giphy.com/girlsthatscuba).
+ 
 
-Enjoy exploring **Spatiotemporal Transformers** with MediaPipe! 🚀
+
 
