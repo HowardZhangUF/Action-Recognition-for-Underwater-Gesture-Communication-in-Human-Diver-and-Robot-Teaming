@@ -1,18 +1,16 @@
 import os
 import numpy as np
-import collections
-import random
-import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
-
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+import torch
+import torch.nn.functional as F
 from sklearn.metrics import confusion_matrix, accuracy_score
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import argparse
+import typing
+from typing import List
 # ----------------------------
 # 1) DATA LOADING & AUGMENTATION
 # ----------------------------
@@ -49,9 +47,11 @@ for action in actions:
         labels.append(label_map[action])
 X = np.array(sequences)  # shape: (num_samples, 60, 126)
 # Use PyTorch one-hot encoding:
-import torch
-import torch.nn.functional as F
-y = F.one_hot(torch.tensor(labels), num_classes=len(actions)).numpy()
+
+y = F.one_hot(torch.tensor(labels), num_classes=len(actions)).numpy()#training models that use categorical encoding for the target variable
+# PyTorch expects one-hot encoding for multi-class classification
+# Convert integer labels to one-hot encoding
+
 
 NUM_CLASSES = len(actions)
 sequence_lengths = [len(seq) for seq in sequences]
@@ -66,7 +66,7 @@ X_train, X_test, y_train_onehot, y_test_onehot = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-y_train = np.argmax(y_train_onehot, axis=1)
+y_train = np.argmax(y_train_onehot, axis=1)#PyTorch expect integer labels for CrossEntropyLoss()
 y_test = np.argmax(y_test_onehot, axis=1)
 
 print(f"Loaded {len(X)} samples, {len(actions)} action classes.")
@@ -79,7 +79,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=5000):
-        super(PositionalEncoding, self).__init__()
+        super().__init__()
         pe = torch.zeros(max_len, d_model)
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
         div_term = torch.exp(
@@ -87,20 +87,21 @@ class PositionalEncoding(nn.Module):
         )
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
-        pe = pe.unsqueeze(0)  # shape: (1, max_len, d_model)
-        self.register_buffer('pe', pe)
+        pe = pe.unsqueeze(0)  
+        self.register_buffer('pe', pe)#register_buffer() is used to register a buffer that should not to be considered a model parameter. It is used to store persistent state that is not a model parameter (e.g. running averages).
+#The positional encoding is added to the input features at the beginning of the forward pass. This allows the model to use the positional information of the input sequence.
 
     def forward(self, x):
         seq_len = x.size(1)
-        x = x + self.pe[:, :seq_len, :].to(x.device)
+        x = x + self.pe[:, :seq_len, :].to(x.device)#The positional encoding is added to the input features at the beginning of the forward pass. This allows the model to use the positional information of the input sequence.
         return x
 
 class ActionTransformer(nn.Module):
     def __init__(self, feature_dim, num_classes, embed_dim=64, num_heads=4, ff_dim=128, dropout=0.1):
         super(ActionTransformer, self).__init__()
-        self.input_proj = nn.Linear(feature_dim, embed_dim)
         self.pos_encoding = PositionalEncoding(d_model=embed_dim)
-
+        self.input_proj = nn.Linear(feature_dim, embed_dim)
+        
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=embed_dim,
             nhead=num_heads,
@@ -114,8 +115,8 @@ class ActionTransformer(nn.Module):
         self.fc_out = nn.Linear(embed_dim, num_classes)
 
     def forward(self, x):
-        x = self.input_proj(x)
         x = self.pos_encoding(x)
+        x = self.input_proj(x)
         x = self.transformer_encoder(x)
         x = torch.mean(x, dim=1)  # global average pooling
         x = self.dropout(x)
@@ -162,7 +163,7 @@ def evaluate_loss_and_accuracy(model, X_data, y_data):
         accuracy_val = correct / y_data.shape[0]
     return loss_val, accuracy_val
 
-def train_model(model, criterion, optimizer, X_train, y_train, X_test, y_test,
+def train_model(model: nn.Module, criterion, optimizer, X_train, y_train, X_test, y_test,
                 epochs=5, batch_size=32):
     """
     Train and store metrics each epoch for plotting.
@@ -279,3 +280,6 @@ plt.show()
 acc = accuracy_score(y_true_np, preds_np)
 print("Confusion Matrix:\n", conf_matrix)
 print(f"Model Accuracy: {acc:.4f}")
+
+
+

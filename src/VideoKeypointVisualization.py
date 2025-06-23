@@ -4,8 +4,7 @@ import mediapipe as mp
 import numpy as np
 import matplotlib
 matplotlib.use('TkAgg') 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  
+import argparse
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  
 
 # Initialize MediaPipe
@@ -172,9 +171,20 @@ def live_3d_plot(video_path=None, use_webcam=False):
     print(f"Processed {frame_count} frames.")
     print("Done.")
 
+def visualize_keypoints(video_path):
+    print(f"Visualizing keypoints for: {video_path}")
+
+
 if __name__ == "__main__":
     # Example usage:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--video_path", type=str, required=True, help="Path to video for visualization")
+
+    args = parser.parse_args()
+
+    visualize_keypoints(args.video_path)
     live_3d_plot(
-        video_path="ExampleVideo/250117_GoPro_HandSignal_Descend_Vertical.MP4",
+        #video_path="ExampleVideo/250117_GoPro_HandSignal_Descend_Vertical.MP4",
+        video_path="args.video_path",
         use_webcam=False
     )

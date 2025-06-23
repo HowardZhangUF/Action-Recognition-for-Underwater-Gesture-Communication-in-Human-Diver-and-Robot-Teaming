@@ -6,11 +6,11 @@ import numpy as np
 import mediapipe as mp
 import torch.nn as nn
 import torch.nn.functional as F
-
+import argparse
 # --------------------------------------
 # 1) MODEL + ACTION LABELS + COLORS
 # --------------------------------------
-MODEL_PATH = "model/0306transformer_action_recognition_holistic6060.pth"
+MODEL_PATH = "model/0306transformer_action_recognition_hand3030_office.pth"
 
 actions = [
     'ASCEND', 'DESCEND', 'ME', 'STOP', 'RIGHT', 'BUDDY_UP',
@@ -49,7 +49,7 @@ def prob_viz(probs, actions, input_frame, colors):
         end_point = (prob_percent, 90 + i * 40)  # prob * 100
         cv2.rectangle(output_frame, start_point, end_point, c, -1)
 
-        # Label: "ACTION_NAME XX%"
+      
         label_text = f"{action} {prob_percent}%"
         cv2.putText(
             output_frame,
@@ -113,7 +113,7 @@ class ActionTransformer(nn.Module):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model = ActionTransformer(
-    feature_dim=225,   # 33 pose x 3 + 21 L-hand x 3 + 21 R-hand x 3
+    feature_dim=126,   # 21 L-hand x 3 + 21 R-hand x 3
     num_classes=NUM_CLASSES,
     embed_dim=64,
     num_heads=4,
@@ -133,8 +133,8 @@ mp_drawing = mp.solutions.drawing_utils
 # --------------------------------------
 def extract_landmarks(results):
     """
-    Extract pose (33x3=99), left hand (21x3=63), right hand (21x3=63).
-    Total 225-dim vector per frame.
+    Extract pose  left hand (21x3=63), right hand (21x3=63).
+    Total 126-dim vector per frame.
     """
     pose = (np.array([[res.x, res.y, res.z] 
              for res in results.pose_landmarks.landmark])
@@ -151,78 +151,95 @@ def extract_landmarks(results):
 # --------------------------------------
 # 5) REAL-TIME ACTION RECOGNITION
 # --------------------------------------
-sequence = []         # Rolling window of frames
-sentence = []         # Store predicted actions for display
-threshold = 0.6       # Confidence threshold
-cap = cv2.VideoCapture(0)
 
-with mp_holistic.Holistic(min_detection_confidence=0.5,
-                          min_tracking_confidence=0.5) as holistic:
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
 
-        # Convert frame for MediaPipe
-        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        image.flags.writeable = False
-        results = holistic.process(image)
-        image.flags.writeable = True
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+def run_demo(model_path, video_path):
+    print(f"Running action recognition with model: {model_path}")
+    if video_path:
+        print(f"Using video: {video_path}")
+    else:
+        print("Using webcam input")
 
-        # Draw landmarks
-        mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
-        mp_drawing.draw_landmarks(image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
-        mp_drawing.draw_landmarks(image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
+    sequence = []         # Rolling window of frames
+    sentence = []         # Store predicted actions for display
+    threshold = 0.6       # Confidence threshold
+    cap = cv2.VideoCapture(0)
 
-        # Extract and store the landmarks in a rolling sequence
-        keypoints = extract_landmarks(results)
-        sequence.append(keypoints)
-        sequence = sequence[-60:]  # Keep last 60 frames
+    with mp_holistic.Holistic(min_detection_confidence=0.5,
+                            min_tracking_confidence=0.5) as holistic:
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-        # When we have enough frames, run inference
-        if len(sequence) == 60:
-            # Prepare input for the model: (1, 60, 225)
-            input_data = torch.tensor([sequence], dtype=torch.float32).to(device)
+            # Convert frame for MediaPipe
+            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            image.flags.writeable = False
+            results = holistic.process(image)
+            image.flags.writeable = True
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            with torch.no_grad():
-                output = model(input_data)  # (1, num_classes)
-                probs = F.softmax(output, dim=1).cpu().numpy()[0]
-                pred_label = np.argmax(probs)
-                confidence = probs[pred_label]
+            # Draw landmarks
+            mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
+            mp_drawing.draw_landmarks(image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
+            mp_drawing.draw_landmarks(image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
 
-            # Probability bars (with % for each action)
-            image = prob_viz(probs, actions, image, colors)
+            # Extract and store the landmarks in a rolling sequence
+            keypoints = extract_landmarks(results)
+            sequence.append(keypoints)
+            sequence = sequence[-60:]  # Keep last 60 frames
 
-            # If highest confidence above threshold, update the displayed sentence
-            if confidence > threshold:
-                predicted_action = actions[pred_label]
-                if not sentence or (predicted_action != sentence[-1]):
-                    sentence.append(predicted_action)
+            # When we have enough frames, run inference
+            if len(sequence) == 60:
+                # Prepare input for the model: (1, 60, 126)
+                input_data = torch.tensor([sequence], dtype=torch.float32).to(device)
 
-            # Keep only last 5 predictions in 'sentence'
-            if len(sentence) > 5:
-                sentence = sentence[-5:]
+                with torch.no_grad():
+                    output = model(input_data)  # (1, num_classes)
+                    probs = F.softmax(output, dim=1).cpu().numpy()[0]
+                    pred_label = np.argmax(probs)
+                    confidence = probs[pred_label]
 
-            # Draw the current "sentence" at the top
-            cv2.rectangle(image, (0, 0), (640, 40), (245, 117, 16), -1)
-            cv2.putText(
-                image,
-                " | ".join(sentence),
-                (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                1, (255, 255, 255),
-                2, cv2.LINE_AA
-            )
+                # Probability bars 
+                image = prob_viz(probs, actions, image, colors)
 
-        # Show webcam feed
-        cv2.imshow("Real-Time Action Recognition", image)
+                # If highest confidence above threshold, update the displayed sentence
+                if confidence > threshold:
+                    predicted_action = actions[pred_label]
+                    if not sentence or (predicted_action != sentence[-1]):
+                        sentence.append(predicted_action)
 
-        # Quit if 'q' is pressed
-        if cv2.waitKey(10) & 0xFF == ord("q"):
-            break
+                # Keep only last 5 predictions in 'sentence'
+                if len(sentence) > 5:
+                    sentence = sentence[-5:]
 
-cap.release()
-cv2.destroyAllWindows()
+                # Draw the current "sentence" at the top
+                cv2.rectangle(image, (0, 0), (640, 40), (245, 117, 16), -1)
+                cv2.putText(
+                    image,
+                    " | ".join(sentence),
+                    (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    1, (255, 255, 255),
+                    2, cv2.LINE_AA
+                )
 
+            # Show webcam feed
+            cv2.imshow("Real-Time Action Recognition", image)
+
+            # Quit if 'q' is pressed
+            if cv2.waitKey(10) & 0xFF == ord("q"):
+                break
+
+    cap.release()
+    cv2.destroyAllWindows()    
+   
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model_path", type=str, required=True, help="Path to pre-trained model")
+    parser.add_argument("--video_path", type=str, default=None, help="Path to input video (optional, defaults to webcam)")
+
+    args = parser.parse_args()
+
+    run_demo(args.model_path, args.video_path)
 
