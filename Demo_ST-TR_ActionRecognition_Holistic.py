@@ -154,13 +154,16 @@ def extract_landmarks(results):
 sequence = []         # Rolling window of frames
 sentence = []         # Store predicted actions for display
 threshold = 0.6       # Confidence threshold
-cap = cv2.VideoCapture(0)
+# Replace 0 with the path to your video file
+VIDEO_PATH = "Screencast from 07-22-2025 10:57:37 AM.webm"
+cap = cv2.VideoCapture(VIDEO_PATH)
 
 with mp_holistic.Holistic(min_detection_confidence=0.5,
                           min_tracking_confidence=0.5) as holistic:
-    while cap.isOpened():
+    while True:
         ret, frame = cap.read()
         if not ret:
+            print("▶️ End of video.")
             break
 
         # Convert frame for MediaPipe
@@ -224,5 +227,3 @@ with mp_holistic.Holistic(min_detection_confidence=0.5,
 
 cap.release()
 cv2.destroyAllWindows()
-
-
