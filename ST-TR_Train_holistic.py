@@ -223,8 +223,8 @@ train_losses, test_losses, train_accs, test_accs = train_model(
 print("Training complete!")
 
 # Save the PyTorch model
-torch.save(model.state_dict(), "0306transformer_action_recognition_holisticOFFICETankMix6060+60.pth")
-print("Model saved to 0306transformer_action_recognition_holisticOFFICETankMix6060+60.pth")
+torch.save(model.state_dict(), "transformer_action_recognition_holistic_trained.pth")
+print("Model saved to transformer_action_recognition_holistic_trained.pth")
 
 # ----------------------------
 # 7) PLOT LOSS & ACCURACY CURVES
