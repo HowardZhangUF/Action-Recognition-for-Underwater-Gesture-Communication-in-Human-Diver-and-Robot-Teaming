@@ -29,7 +29,7 @@ Gesture and action recognition plays a crucial role in Human-Computer Interactio
 * **Spatiotemporal Transformer Networks (ST-TR)** to model temporal dependencies and spatial correlations across keypoints.
 * **PyTorch** for deep learning model implementation and training.
 
-The result is a pipeline capable of recognizing gestures from videos in real time.
+
 
 ---
 
