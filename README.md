@@ -1,6 +1,7 @@
 # SPATIAL TEMPORAL TRANSFORMER NETWORK MEDIAPIPE
 
 This repository implements a **Spatiotemporal Transformer** for **gesture/action recognition** using **MediaPipe** to extract keypoints. It includes scripts for **data processing**, **visualization**, **training**, and an **end-to-end pipeline**.
+![](https://github.com/HowardZhangUF/Spatial-Temporal-Transformer-Network-Mediapipe/blob/main/demo.gif)
 
 ---
 
