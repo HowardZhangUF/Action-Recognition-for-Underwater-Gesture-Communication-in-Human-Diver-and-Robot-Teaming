@@ -1,4 +1,4 @@
-# Spatial-Temporal Transformer Network with MediaPipe
+# Action Recognition for Underwater Gesture Communication in Human Diver and Robot Teaming
 
 This repository implements a **Spatiotemporal Transformer Network (ST-TR)** for **gesture/action recognition** using **MediaPipe** to extract keypoints. It provides a complete pipeline for data processing, visualization, training, and inference, enabling end-to-end gesture recognition from videos.
 
