@@ -1,7 +1,14 @@
 # Spatial-Temporal Transformer Network with MediaPipe
+<<<<<<< HEAD
 
 This repository implements a **Spatiotemporal Transformer Network (ST-TR)** for **gesture/action recognition** using **MediaPipe** to extract keypoints. It provides a complete pipeline for data processing, visualization, training, and inference, enabling end-to-end gesture recognition from videos.
 
+=======
+
+This repository implements a **Spatiotemporal Transformer Network (ST-TR)** for **gesture/action recognition** using **MediaPipe** to extract keypoints. It provides a complete pipeline for data processing, visualization, training, and inference, enabling end-to-end gesture recognition from videos.
+
+![](https://github.com/HowardZhangUF/Spatial-Temporal-Transformer-Network-Mediapipe/blob/main/videoDemo.gif)
+>>>>>>> 76bcc66ac4e619c9b4f0c28e35e13ba3be8d387c
 ![](https://github.com/HowardZhangUF/Spatial-Temporal-Transformer-Network-Mediapipe/blob/main/demo.gif)
 ![](https://github.com/HowardZhangUF/Spatial-Temporal-Transformer-Network-Mediapipe/blob/main/videoDemo.gif)
 
@@ -10,6 +17,7 @@ This repository implements a **Spatiotemporal Transformer Network (ST-TR)** for 
 ## Table of Contents
 
 1. [Introduction](#introduction)
+<<<<<<< HEAD
 2. [Dataset](#dataset)
 3. [Installation & Dependencies](#installation--dependencies)
 4. [Keypoint Visualization](#keypoint-visualization)
@@ -20,10 +28,32 @@ This repository implements a **Spatiotemporal Transformer Network (ST-TR)** for 
 ---
 
 ## Dataset
+=======
+2. [Installation & Dependencies](#installation--dependencies)
+3. [Dataset Preparation](#dataset-preparation)
+4. [Keypoint Visualization](#keypoint-visualization)
+5. [Training the Transformer](#training-the-transformer)
+6. [Running Demos](#running-demos)
+7. [Results & Performance](#results--performance)
+8. [License & Credits](#license--credits)
+
+---
+
+## Introduction
+
+Gesture and action recognition plays a crucial role in Human-Computer Interaction (HCI), robotics, and AR/VR. This project leverages:
+
+* **MediaPipe** for efficient and robust keypoint extraction of hands, body, and holistic poses.
+* **Spatiotemporal Transformer Networks (ST-TR)** to model temporal dependencies and spatial correlations across keypoints.
+>>>>>>> 76bcc66ac4e619c9b4f0c28e35e13ba3be8d387c
 
 We use the **Scuba Gesture Dataset (SDG11)** for training and evaluation. Please refer to the original repository for dataset access:
 
+<<<<<<< HEAD
 [Scuba Gesture Dataset (SDG11)](https://github.com/abubake/Scuba-Gesture-Dataset.git)
+=======
+The result is a pipeline that can recognize gestures from videos in real time.
+>>>>>>> 76bcc66ac4e619c9b4f0c28e35e13ba3be8d387c
 
 ---
 ## Introduction
