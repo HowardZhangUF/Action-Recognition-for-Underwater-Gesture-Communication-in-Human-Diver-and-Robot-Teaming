@@ -78,7 +78,7 @@ python VideoKeypointVisualization.py
 ---
 
 ## Training the Transformer
-
+![Alt text](perception_method.png)
 Train the Spatiotemporal Transformer model using prepared datasets:
 
 ```bash
