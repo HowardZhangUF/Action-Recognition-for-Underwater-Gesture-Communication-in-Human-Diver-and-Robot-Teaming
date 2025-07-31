@@ -15,9 +15,9 @@ This repository implements a **Spatiotemporal Transformer Network (ST-TR)** for 
 4. [Keypoint Visualization](#keypoint-visualization)
 5. [Training the Transformer](#training-the-transformer)
 6. [Running Demos](#running-demos)
-7. [Results & Performance](#results--performance)
-8. [License & Credits](#license--credits)
-9. [Future Work](#future-work)
+7. [License & Credits](#license--credits)
+8. [Future Work](#future-work)
+
 
 ---
 
@@ -103,26 +103,8 @@ python Demo_ST-TR_ActionRecognition_Hand.py
 python Demo_ST-TR_ActionRecognition_Holistic.py
 ```
 
-### Real-time gesture recognition (webcam input):
 
-```bash
-python Demo_ST-TR_Webcam.py
-```
 
----
-
-## Results & Performance
-
-The ST-TR model has been tested on benchmark gesture/action datasets and custom recordings. Results demonstrate:
-
-* High accuracy in recognizing predefined gestures.
-* Robustness to noise and varying lighting conditions.
-* Efficient real-time inference using MediaPipe keypoints.
-
-Example metrics (for a dataset of 11 gesture classes):
-
-* **Accuracy**: \~92%
-* **F1-score**: \~0.90
 
 ---
 
