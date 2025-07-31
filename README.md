@@ -46,8 +46,8 @@ We use the **Scuba Gesture Dataset (SDG11)** for training and evaluation. Please
 1. **Clone this repository**:
 
    ```bash
-   git clone https://github.com/yourusername/Spatial-Temporal-Transformer-Network-Mediapipe.git
-   cd Spatial-Temporal-Transformer-Network-Mediapipe
+   git clone https://github.com/HowardZhangUF/Action-Recognition-for-Underwater-Gesture-Communication-in-Human-Diver-and-Robot-Teaming.git
+   cd Action-Recognition-for-Underwater-Gesture-Communication-in-Human-Diver-and-Robot-Teaming
    ```
 
 2. **Install dependencies** (Python 3.10.12+ recommended):
