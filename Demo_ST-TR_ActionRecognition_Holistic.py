@@ -10,7 +10,7 @@ import torch.nn.functional as F
 # --------------------------------------
 # 1) MODEL + ACTION LABELS + COLORS
 # --------------------------------------
-MODEL_PATH = "model/transformer_action_recognition_holistic6060.pth"
+MODEL_PATH = "action_transformer_v2.pth"
 
 actions = [
     'ASCEND', 'DESCEND', 'ME', 'STOP', 'RIGHT', 'BUDDY_UP',
