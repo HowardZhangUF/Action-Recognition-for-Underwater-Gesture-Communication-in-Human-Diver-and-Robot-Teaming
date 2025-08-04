@@ -48,13 +48,10 @@ class_names = full_dataset.classes
 NUM_CLASSES = len(class_names)
 print("Classes:", class_names)
 
-# ----------------------------
-# 2) MODEL: SUPER-LIGHT CNN
-# ----------------------------
-class SimpleCNN(nn.Module):
+
+class CNN(nn.Module):
     """
-    3×(Conv→ReLU) with two MaxPools + global average pool.
-    Only ~0.1 M params ⇒ very fast training.
+   
     """
     def __init__(self, num_classes: int):
         super().__init__()
@@ -80,13 +77,13 @@ class SimpleCNN(nn.Module):
         return self.classifier(x)     # (B, num_classes)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model  = SimpleCNN(NUM_CLASSES).to(device)
+model  = CNN(NUM_CLASSES).to(device)
 
 # ----------------------------
 # 3) LOSS & OPTIMIZER
 # ----------------------------
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=5e-3)   # higher LR → quicker convergence
+optimizer = optim.Adam(model.parameters(), lr=5e-3)  
 
 # ----------------------------
 # 4) TRAINING LOOP
@@ -186,20 +183,20 @@ if __name__ == "__main__":
     plt.show()
 
     
-    # Confusion matrix (normalize row-wise, convert to %)
+    
     cm = confusion_matrix(labels, preds, normalize="true") * 100
 
-    # Pre-format labels (not transposed)
+    
     cm_labels = np.array([["{:.1f} %".format(v) for v in row] for row in cm])
 
     plt.figure(figsize=(6, 5))
     sns.heatmap(
-        cm.T,                  # transpose the actual heatmap values
-        annot=cm_labels,       # but keep the original (non-transposed) labels
+        cm.T,                  
+        annot=cm_labels,       
         fmt="",
         cmap="Blues",
-        xticklabels=actions,   # Predicted stays on x-axis
-        yticklabels=actions    # True stays on y-axis
+        xticklabels=actions,   
+        yticklabels=actions    
     )
     plt.ylabel("True")
     plt.xlabel("Predicted")
