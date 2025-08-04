@@ -14,8 +14,12 @@ import matplotlib.pyplot as plt, seaborn as sns
 # 1) Hyper-parameters
 # -------------------------
 DATA_PATH       = "Keypoint Data/MP_Data_6060+60_HOLISTIC/"
-actions         = ['ASCEND','DESCEND','ME','STOP','RIGHT','BUDDY_UP',
-                   'FOLLOW_ME','OKAY','LEFT','YOU','LEVEL']
+#actions         = ['ASCEND','DESCEND','ME','STOP','ToRight','BUDDY_UP',
+ #                  'FOLLOW_ME','OKAY','ToLeft','YOU','STAY']
+actions = [
+    'ASCEND', 'DESCEND', 'ME', 'STOP', 'RIGHT', 'BUDDY_UP',
+    'FOLLOW_ME', 'OKAY', 'LEFT', 'YOU', 'LEVEL'
+]
 SEQ_LEN         = 30
 EMBED_DIM       = 128
 N_HEADS         = 8
