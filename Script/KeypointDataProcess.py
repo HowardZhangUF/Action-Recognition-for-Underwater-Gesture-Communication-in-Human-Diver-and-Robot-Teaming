@@ -8,8 +8,8 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
 # ----- Define Paths -----
-DATA_PATH = "0228_lmData_mpHand"
-VIDEO_PATH = "/home/zhangzihao@ad.ufl.edu/Downloads/Public_Dataset"  
+DATA_PATH = "Blue_Grutto_HandPose"  # Changed to reflect pose data
+VIDEO_PATH = "C:/Users/zhangzihao/Action-Recognition-for-Underwater-Gesture-Communication-in-Human-Diver-and-Robot-Teaming/Public_Dataset"  
 
 # Actions array (11 actions)
 actions = [
@@ -84,12 +84,23 @@ with mp_hands.Hands(
 
     # Loop over each action
     for action in actions:
-        # Loop over each video for the current action
-        for sequence in range(1, no_sequences + 1):
-            video_file = os.path.join(VIDEO_PATH, action, f"{sequence}.MP4")
-            if not os.path.isfile(video_file):
-                print(f"❌ Video file not found: {video_file}")
-                continue
+        print(f"🔄 Processing action: {action}")
+        action_folder = os.path.join(VIDEO_PATH, action)
+        if not os.path.isdir(action_folder):
+            print(f"❌ Action folder not found: {action_folder}")
+            continue
+            
+        # Get all video files in the action folder
+        video_files = [f for f in os.listdir(action_folder) if f.lower().endswith(('.mp4', '.MP4'))]
+        print(f"  📁 Found {len(video_files)} videos for action {action}")
+        
+        # Process each video file
+        for sequence, video_filename in enumerate(video_files, 1):
+            if sequence > no_sequences:  # Limit to no_sequences videos
+                break
+                
+            video_file = os.path.join(action_folder, video_filename)
+            print(f"  🎥 Processing video {sequence}/{min(len(video_files), no_sequences)}: {video_filename}")
 
             cap = cv2.VideoCapture(video_file)
             last_valid_frame = None
@@ -124,12 +135,19 @@ with mp_hands.Hands(
                 )
                 np.save(npy_path, keypoints)
 
-                # Optional: Display the feed for debugging
-                cv2.imshow('OpenCV Feed', frame)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
+                try:
+                    cv2.imshow('OpenCV Feed', frame)
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        break
+                except cv2.error:
+                    # Skip display if OpenCV GUI is not available
+                    pass
 
             cap.release()
 
-cv2.destroyAllWindows()
+try:
+    cv2.destroyAllWindows()
+except cv2.error:
+    # Skip if OpenCV GUI is not available
+    pass
 print("✅ Landmark extraction using MediaPipe Hands complete!")
