@@ -155,7 +155,7 @@ sequence = []         # Rolling window of frames
 sentence = []         # Store predicted actions for display
 threshold = 0.6       # Confidence threshold
 # Replace 0 with the path to your video file
-VIDEO_PATH = "Screencast from 07-22-2025 10:57:37 AM.webm"
+VIDEO_PATH = "STOP_SPRINGS_VERTICAL_eaf5ac5b84 (online-video-cutter.com).mp4"
 cap = cv2.VideoCapture(VIDEO_PATH)
 
 with mp_holistic.Holistic(min_detection_confidence=0.5,
