@@ -16,7 +16,7 @@ import seaborn as sns
 # ----------------------------
 # 1) DATA LOADING & AUGMENTATION
 # ----------------------------
-DATA_PATH = "Keypoint Data/MP_Data_3030_HAND/"
+DATA_PATH = "Keypoint Data/MP_Data_6060+60_HOLISTIC/"
 actions = [
     'ASCEND', 'DESCEND', 'ME', 'STOP', 'RIGHT', 'BUDDY_UP',
     'FOLLOW_ME', 'OKAY', 'LEFT', 'YOU', 'LEVEL'
