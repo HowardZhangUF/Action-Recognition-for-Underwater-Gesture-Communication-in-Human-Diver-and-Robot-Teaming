@@ -10,7 +10,7 @@ import torch.nn.functional as F
 # --------------------------------------
 # 1) MODEL + ACTION LABELS + COLORS
 # --------------------------------------
-MODEL_PATH = "action_transformer_v2.pth"
+MODEL_PATH = "model/transformer_action_recognition_holistic6060.pth"
 
 actions = [
     'ASCEND', 'DESCEND', 'ME', 'STOP', 'RIGHT', 'BUDDY_UP',
@@ -26,7 +26,7 @@ colors = [
     (255, 0, 0),
     (0, 255, 255),
     (255, 0, 255),
-    (128, 0, 128),
+    (128, 0, 128),  
     (128, 128, 0),
     (0, 128, 128),
     (50, 100, 50),
@@ -155,7 +155,7 @@ sequence = []         # Rolling window of frames
 sentence = []         # Store predicted actions for display
 threshold = 0.6       # Confidence threshold
 # Replace 0 with the path to your video file
-VIDEO_PATH = "Screencast from 07-22-2025 10:57:37 AM.webm"
+VIDEO_PATH = "example_video.webm"
 cap = cv2.VideoCapture(VIDEO_PATH)
 
 with mp_holistic.Holistic(min_detection_confidence=0.5,
@@ -219,11 +219,19 @@ with mp_holistic.Holistic(min_detection_confidence=0.5,
             )
 
         # Show webcam feed
-        cv2.imshow("Real-Time Action Recognition", image)
-
-        # Quit if 'q' is pressed
-        if cv2.waitKey(10) & 0xFF == ord("q"):
-            break
+        try:
+            cv2.imshow("Real-Time Action Recognition", image)
+            # Quit if 'q' is pressed
+            if cv2.waitKey(10) & 0xFF == ord("q"):
+                break
+        except cv2.error:
+            # Skip display if OpenCV GUI is not available
+            pass
 
 cap.release()
-cv2.destroyAllWindows()
+
+try:
+    cv2.destroyAllWindows()
+except cv2.error:
+    # Skip if OpenCV GUI is not available
+    pass

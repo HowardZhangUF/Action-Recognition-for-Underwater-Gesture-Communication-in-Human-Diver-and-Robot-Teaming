@@ -99,6 +99,10 @@ class GestureDataset(Dataset):
                 seq = np.concatenate([seq, pad], 0)
             else:
                 seq = time_warp(seq)
+
+            scale = np.random.uniform(0.9, 1.1)
+            seq *= scale
+            seq += np.random.normal(0, 0.01, size=seq.shape)
         return torch.from_numpy(seq), label
 
 train_ds = GestureDataset(X_train, y_train, train=True)

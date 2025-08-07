@@ -133,7 +133,7 @@ def extract_landmarks(results):
 # --------------------------------------
 sequence, sentence = [], []
 threshold = 0.6
-VIDEO_PATH = "Screencast from 07-22-2025 10:57:37 AM.webm"
+VIDEO_PATH = "example_video.webm"
 cap = cv2.VideoCapture(VIDEO_PATH)
 
 with mp_hands.Hands(
@@ -187,11 +187,19 @@ with mp_hands.Hands(
             cv2.putText(image, " | ".join(sentence), (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
-        cv2.imshow("Real-Time Action Recognition (Hands)", image)
-
-        if cv2.waitKey(10) & 0xFF == ord("q"):
-            break
+        try:
+            cv2.imshow("Real-Time Action Recognition (Hands)", image)
+            if cv2.waitKey(10) & 0xFF == ord("q"):
+                break
+        except cv2.error:
+            # Skip display if OpenCV GUI is not available
+            pass
 
 cap.release()
-cv2.destroyAllWindows()
+
+try:
+    cv2.destroyAllWindows()
+except cv2.error:
+    # Skip if OpenCV GUI is not available
+    pass
 

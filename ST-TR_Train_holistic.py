@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt, seaborn as sns
 # -------------------------
 # 1) Hyper-parameters
 # -------------------------
-DATA_PATH       = "Keypoint Data/Blue_Grutto_Pose/"
+DATA_PATH       = "Keypoint Data/MP_Data_6060+60_HOLISTIC/"
 #actions         = ['ASCEND','DESCEND','ME','STOP','ToRight','BUDDY_UP',
  #                  'FOLLOW_ME','OKAY','ToLeft','YOU','STAY']
 actions = [
@@ -99,6 +99,10 @@ class GestureDataset(Dataset):
                 seq = np.concatenate([seq, pad], 0)
             else:
                 seq = time_warp(seq)
+            
+            scale = np.random.uniform(0.9, 1.1)
+            seq *= scale
+            seq += np.random.normal(0, 0.01, size=seq.shape)
         return torch.from_numpy(seq), label
 
 train_ds = GestureDataset(X_train, y_train, train=True)
