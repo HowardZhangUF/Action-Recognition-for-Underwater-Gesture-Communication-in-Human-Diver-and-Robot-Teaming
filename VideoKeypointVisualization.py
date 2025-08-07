@@ -14,7 +14,7 @@ mp_drawing = mp.solutions.drawing_utils
 
 def extract_3d_landmarks(results):
     """
-    Collect 3D (x, y, z) landmarks from:
+    Collect 3D (x, y, z) landmarks from:python ST-TR_Train_holistic.py
       - results.pose_landmarks (33 points)
       - results.left_hand_landmarks (21 points)
       - results.right_hand_landmarks (21 points)
@@ -175,6 +175,6 @@ def live_3d_plot(video_path=None, use_webcam=False):
 if __name__ == "__main__":
     # Example usage:
     live_3d_plot(
-        video_path="Screencast from 07-22-2025 10:57:37 AM.webm",
+        video_path="example_video.webm",
         use_webcam=False
     )

@@ -133,7 +133,7 @@ def extract_landmarks(results):
 # --------------------------------------
 sequence, sentence = [], []
 threshold = 0.6
-VIDEO_PATH = "Screencast from 07-22-2025 10:57:37 AM.webm"
+VIDEO_PATH = "FOLLOWME_SPRINGS_VERTICAL_0030ab1096 (online-video-cutter.com).mp4"
 cap = cv2.VideoCapture(VIDEO_PATH)
 
 with mp_hands.Hands(
