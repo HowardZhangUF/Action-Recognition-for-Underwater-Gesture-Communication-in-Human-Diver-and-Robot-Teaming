@@ -78,11 +78,11 @@ python VideoKeypointVisualization.py
 ---
 
 ## Training the Transformer
-![Alt text](perception_method.png)
+![Alt text](/media/perception_method.png)
 Train the Spatiotemporal Transformer model using prepared datasets:
 
 ```bash
-python ST-TR_Train_holistic.py
+python ST-TR_Train_holistic_4encoder.py
 ```
 
 The training script supports both **hand-only** and **holistic body** keypoints. Training logs and checkpoints will be saved for evaluation.

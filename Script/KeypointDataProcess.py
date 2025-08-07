@@ -8,8 +8,8 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
 # ----- Define Paths -----
-DATA_PATH = "0228_lmData_mpHand"
-VIDEO_PATH = "/home/zhangzihao@ad.ufl.edu/Downloads/Public_Dataset"  
+DATA_PATH = "mpHand"
+VIDEO_PATH = "/Public_Dataset"  
 
 # Actions array (11 actions)
 actions = [

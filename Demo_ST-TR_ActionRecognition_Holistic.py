@@ -1,4 +1,3 @@
-
 import os
 import cv2
 import torch
@@ -155,7 +154,7 @@ sequence = []         # Rolling window of frames
 sentence = []         # Store predicted actions for display
 threshold = 0.6       # Confidence threshold
 # Replace 0 with the path to your video file
-VIDEO_PATH = "FOLLOWME_SPRINGS_VERTICAL_0030ab1096 (online-video-cutter.com).mp4"
+VIDEO_PATH = "media/FOLLOWME_SPRINGS_VERTICAL_0030ab1096 (online-video-cutter.com).mp4"
 cap = cv2.VideoCapture(VIDEO_PATH)
 
 with mp_holistic.Holistic(min_detection_confidence=0.5,

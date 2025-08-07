@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt, seaborn as sns
 # -------------------------
 # 1) Hyper-parameters
 # -------------------------
-DATA_PATH       = "Blue_Grutto_HandPose/"          # Match the output from KeypointDataProcess.py
+DATA_PATH       = "Keypoint Data/MP_Data_3030_HAND/"          # Match the output from KeypointDataProcess.py
 #actions         = ['ASCEND','DESCEND','ME','STOP','ToRight','BUDDY_UP',
  #                  'FOLLOW_ME','OKAY','ToLeft','YOU','STAY']
 actions = [

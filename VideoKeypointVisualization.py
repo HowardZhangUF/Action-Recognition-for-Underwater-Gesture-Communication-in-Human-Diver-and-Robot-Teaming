@@ -175,6 +175,6 @@ def live_3d_plot(video_path=None, use_webcam=False):
 if __name__ == "__main__":
     # Example usage:
     live_3d_plot(
-        video_path="example_video.webm",
+        video_path="media/example_video.webm",
         use_webcam=False
     )
