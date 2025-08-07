@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt, seaborn as sns
 # -------------------------
 # 1) Hyper-parameters
 # -------------------------
-DATA_PATH       = "Keypoint Data/MP_Data_6060+60_HOLISTIC/"
+DATA_PATH       = "Keypoint Data/Blue_Grutto_Pose/"
 #actions         = ['ASCEND','DESCEND','ME','STOP','ToRight','BUDDY_UP',
  #                  'FOLLOW_ME','OKAY','ToLeft','YOU','STAY']
 actions = [
