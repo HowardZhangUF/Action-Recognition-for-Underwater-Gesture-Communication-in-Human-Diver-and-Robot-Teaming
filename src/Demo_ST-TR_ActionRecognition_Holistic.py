@@ -10,7 +10,7 @@ import torch.nn.functional as F
 # --------------------------------------
 # 1) MODEL + ACTION LABELS + COLORS
 # --------------------------------------
-MODEL_PATH = "model/0306transformer_action_recognition_holistic6060.pth"
+MODEL_PATH = "../models/0306transformer_action_recognition_holistic6060.pth"
 
 actions = [
     'ASCEND', 'DESCEND', 'ME', 'STOP', 'RIGHT', 'BUDDY_UP',
@@ -120,7 +120,7 @@ model = ActionTransformer(
     ff_dim=128,
     dropout=0.1
 )
-model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+model.load_state_dict(torch.load(MODEL_PATH, map_location=device, weights_only=False))
 model.to(device)
 model.eval()
 print("✅ Model Loaded Successfully!")
@@ -155,7 +155,7 @@ sequence = []         # Rolling window of frames
 sentence = []         # Store predicted actions for display
 threshold = 0.6       # Confidence threshold
 # Replace 0 with the path to your video file
-VIDEO_PATH = "Screencast from 07-22-2025 10:57:37 AM.webm"
+VIDEO_PATH = "../Screencast from 07-22-2025 10:57:37 AM.webm"
 cap = cv2.VideoCapture(VIDEO_PATH)
 
 with mp_holistic.Holistic(min_detection_confidence=0.5,

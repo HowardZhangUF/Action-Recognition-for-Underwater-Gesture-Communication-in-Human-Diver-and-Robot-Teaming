@@ -59,7 +59,20 @@ SPATIAL_TEMPORAL_TRANSFORMER_NETWORK_MEDIAPIPE/
    git clone https://github.com/yourusername/Spatial-Temporal-Transformer-Network-Mediapipe.git
    cd Spatial-Temporal-Transformer-Network-Mediapipe
    ```
+**key dependencies**:
+```bash
 
+mediapipe                            0.10.18
+cv-bridge                            3.2.1
+opencv-contrib-python                4.11.0.86
+opencv-python                        4.11.0.86
+torch                                2.7.1
+torchvision                          0.22.1
+numpy                                1.26.4
+ which python
+/usr/bin/python
+
+```
 2. **Install dependencies** (Python 3.7+ recommended):
    ```bash
    pip install -r requirements.txt
@@ -146,6 +159,27 @@ bash scripts/run_pipeline.sh \
   100 \
   32 \
   "true"
+```
+**ROS with the cam streaming**:
+```bash
+cd ~/Action-Recognition-for-Underwater-Gesture-Communication-in-Human-Diver-and-Robot-Teaming/gesture_streaming_ros
+
+# Clean previous build
+rm -rf build/ install/ log/
+
+# Verify micromamba environment is active
+which python   # Should show: /home/user/micromamba/envs/ros_jazzy/bin/python
+
+# Rebuild with correct Python
+colcon build --packages-select gesture_perception
+
+# Source the setup
+source install/setup.bash
+
+ros2 launch gesture_perception transformer_with_camera.launch.py \
+    image_width:=1280 \
+    image_height:=720 \
+    device:=cuda
 ```
 
 ---

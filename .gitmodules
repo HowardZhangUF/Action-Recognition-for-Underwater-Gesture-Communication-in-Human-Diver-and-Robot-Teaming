@@ -1,0 +1,6 @@
+[submodule "FUnIE-GAN"]
+	path = FUnIE-GAN
+	url = https://github.com/HowardZhangUF/FunieGAN.git
+[submodule "FunieGAN"]
+	path = FunieGAN
+	url = https://github.com/HowardZhangUF/FunieGAN.git
