@@ -10,7 +10,7 @@ import argparse
 # --------------------------------------
 # 1) MODEL + ACTION LABELS + COLORS
 # --------------------------------------
-MODEL_PATH = "model/0306transformer_action_recognition_holistic6060.pth"
+MODEL_PATH = "../models/0306transformer_action_recognition_holistic6060.pth"
 
 actions = [
     'ASCEND', 'DESCEND', 'ME', 'STOP', 'RIGHT', 'BUDDY_UP',
